@@ -50,7 +50,7 @@ def main():
         # Verifica se preço de compra atende ao preço de venda
         if melhor_compra.preco >= melhor_venda.preco:
             print(f"MATCH ENCONTRADO! Comprador {melhor_compra.id} e Vendedor {melhor_venda.id}")
-            # O grupo implementará a transação e atualização dos nós aqui
+             #TODO # O grupo implementará a transação e atualização dos nós aqui
         else:
             print("Sem match no momento. Os preços não cruzaram.")
 
