@@ -32,11 +32,33 @@ class Queue:
 
     def enqueue(self, order):
         """Adiciona uma ordem ao final da fila."""
-        pass # TODO: Implementar lógica do grupo
+        new_node = Node(order)
+        
+        if self.is_empty():
+            # Se a fila está vazia, o novo nó é head e tail
+            self.head = new_node
+            self.tail = new_node
+        else:
+            # Caso contrário, liga o tail atual ao novo nó e atualiza tail
+            self.tail.next = new_node
+            self.tail = new_node
 
     def dequeue(self):
         """Remove e retorna a ordem do início da fila."""
-        pass # TODO: Implementar lógica do grupo
+        if self.is_empty():
+            return None
+        
+        # Obtém a ordem do head
+        order = self.head.data
+        
+        # Move head para o próximo nó
+        self.head = self.head.next
+        
+        # Se a fila ficou vazia, limpa tail também (evita nós órfãos)
+        if self.head is None:
+            self.tail = None
+        
+        return order
         
     def is_empty(self):
         return self.head is None
