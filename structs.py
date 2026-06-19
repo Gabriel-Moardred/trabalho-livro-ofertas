@@ -54,15 +54,91 @@ class DoublyLinkedList:
     def insert_ordered(self, order, is_buy_list):
         """
         Insere de forma ordenada.
-        Se is_buy_list == True: ordem decrescente de preço.
-        Se is_buy_list == False: ordem crescente de preço.
+        Se is_buy_list == True: ordem decrescente de preço (melhor comprador no início).
+        Se is_buy_list == False: ordem crescente de preço (melhor vendedor no início).
+
+        Assume que ordens chegam em ordem cronológica crescente de timestamp.
+        Isso garante que, para preços iguais, a ordem mais antiga sempre
+        precede a mais nova (comportamento FIFO dentro do mesmo nível de preço).
         """
-        pass # TODO: Implementar religamento de ponteiros sem deixar nós órfãos
+        novo = Node(order)
+
+        # Caso 1: lista vazia
+        if self.head is None:
+            self.head = novo
+            self.tail = novo
+            return
+
+        # Define a comparação de acordo com o tipo de livro.
+        
+        if is_buy_list:
+            melhor = lambda novo_p, atual_p: novo_p > atual_p   # decrescente
+        else:
+            melhor = lambda novo_p, atual_p: novo_p < atual_p   # crescente
+
+        
+        if melhor(order.preco, self.head.data.preco):
+            novo.next = self.head
+            self.head.prev = novo
+            self.head = novo
+            return
+
+        atual = self.head
+
+        while atual.next is not None and (
+            melhor(atual.next.data.preco, order.preco) or (
+                atual.next.data.preco == order.preco and
+                atual.next.data.timestamp < order.timestamp)
+        ):
+            atual = atual.next
+
+        if atual.next is None:
+            # Caso 3: chegou ao fim — novo nó é o pior do livro, vira tail
+            atual.next = novo
+            novo.prev = atual
+            self.tail = novo
+        else:
+            # Caso 4: inserção no meio — religar 4 ponteiros sem criar nós órfãos.
+            novo.next = atual.next     
+            novo.prev = atual          
+            atual.next.prev = novo     
+            atual.next = novo           
 
     def remove(self, order_id):
-        """Remove um nó de qualquer ponto da lista."""
-        pass # TODO: Implementar lógica do grupo
-        
+        """
+        Remove um nó de qualquer ponto da lista.
+        Retorna o objeto Order removido, ou None se o ID não for encontrado.
+        """
+        atual = self.head
+
+        while atual is not None:
+            if atual.data.id == order_id:
+
+                if atual.prev is None and atual.next is None:
+                    # Único nó da lista
+                    self.head = None
+                    self.tail = None
+
+                elif atual.prev is None:
+                    # Nó é o head — promove o seguinte
+                    self.head = atual.next
+                    self.head.prev = None
+
+                elif atual.next is None:
+                    # Nó é o tail — promove o anterior
+                    self.tail = atual.prev
+                    self.tail.next = None
+
+                else:
+                    # Nó do meio — religar predecessor e sucessor diretamente
+                    atual.prev.next = atual.next
+                    atual.next.prev = atual.prev
+
+                return atual.data   
+            atual = atual.next
+
+        return None 
+    
     def peek_best_offer(self):
         """Retorna o início da lista (melhor comprador/vendedor) para o motor de match."""
         if self.head:
