@@ -80,8 +80,17 @@ class Stack:
 
     def push(self, order_id):
         """Armazena o ID de uma ordem inserida."""
-        pass # TODO: Implementar lógica do grupo
+        new_node = Node(order_id)
+        new_node.next = self.top
+        self.top = new_node
 
     def pop(self):
         """Remove e retorna o último ID inserido para cancelamento."""
-        pass # TODO: Implementar lógica do grupo
+        if self.top is None:
+            return None
+        order_id = self.top.data
+        self.top = self.top.next
+        return order_id
+
+    def is_empty(self):
+        return self.top is None
