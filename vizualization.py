@@ -1,3 +1,12 @@
+
+
+
+# Isso é um programa para vizualizar o processo que será utilizado na apresensentação
+#  a main.py mesmo nao utiliza nenhuma biblioteca externa
+
+
+
+
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
                              QHBoxLayout, QPushButton, QLineEdit, 
