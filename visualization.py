@@ -1,11 +1,5 @@
-
-
-
-# Isso é um programa para vizualizar o processo que será utilizado na apresensentação
-#  a main.py mesmo nao utiliza nenhuma biblioteca externa
-
-
-
+# Este é um programa para visualizar o processo
+# A main.py nao utiliza nenhuma biblioteca externa
 
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, QVBoxLayout, 
@@ -121,11 +115,11 @@ class LivroOfertasPyQt(QMainWindow):
 
         self.input_id = QLineEdit(); self.input_id.setPlaceholderText("ID da Ordem")
 
-        # Enter mnada a entrega (colocado em todas as caixas)
+        # Enter manda a entrega (colocado em todas as caixas)
 
         self.input_id.returnPressed.connect(self.adicionar_ordem) 
         
-        # Botão de alternância (Toggle) no negocio de compra e venda la
+        # Botão de alternância (Toggle) no widget de compra e venda
         self.btn_tipo = QPushButton("Compra")
         self.btn_tipo.setStyleSheet("""
             QPushButton { background-color: #a3be8c; color: #2e3440; font-weight: bold;}
